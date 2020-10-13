@@ -1,18 +1,22 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <World />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from '@/components/HelloWorld.vue'
+  import { Component, Vue } from 'vue-property-decorator'
+  import World from '@/components/scene/World.vue'
+  import Visualizer from '@/services/Visualiser'
 
-@Component({
-  components: {
-    HelloWorld
+  @Component({
+    components: {
+      World
+    }
+  })
+  export default class Home extends Vue {
+    private _viz: Visualizer = new Visualizer()
+
+    mounted() {}
   }
-})
-export default class Home extends Vue {}
 </script>

@@ -11,6 +11,8 @@
     "babel-plugin-wildcard": "^6.0.0",
     "core-js": "^3.6.5",
     "nprogress": "^0.2.0",
+    "simplex-noise": "^2.4.0",
+    "three": "^0.121.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-i18n": "^8.21.0",
