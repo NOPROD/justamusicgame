@@ -5,7 +5,6 @@ import {
   MeshStandardMaterial,
   Mesh,
   BackSide,
-  RepeatWrapping,
   Scene,
   Vector2,
   WebGLRenderer,
@@ -19,7 +18,9 @@ import {
 
 import { TimelineMax, Power1, Power2 } from 'gsap'
 
-export default class Visualizer {
+import { AudioAnalyser } from './AudioAnalyser'
+
+export default class Visualizer extends AudioAnalyser {
   private points!: Vector3[]
   private curves!: CatmullRomCurve3
   private tube!: Mesh
@@ -62,6 +63,7 @@ export default class Visualizer {
   private context: this = this
 
   constructor() {
+    super()
     this.init()
     this.render()
   }
