@@ -1,11 +1,6 @@
 <template>
   <div id="content">
-    <label for="thefile" class="file">
-      <input type="file" id="thefile" accept="audio/*" />
-    </label>
-
-    <audio id="audio" controls></audio>
-    <div id="out"></div>
+    <canvas id="scene"></canvas>
   </div>
 </template>
 

@@ -15,8 +15,8 @@
     }
   })
   export default class Home extends Vue {
-    private _viz: Visualizer = new Visualizer()
-
-    mounted() {}
+    mounted() {
+      new Visualizer()
+    }
   }
 </script>
