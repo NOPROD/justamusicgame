@@ -18,9 +18,7 @@ import {
 
 import { TimelineMax, Power1, Power2 } from 'gsap'
 
-import { AudioAnalyser } from './AudioAnalyser'
-
-export default class Visualizer extends AudioAnalyser {
+export class Visualizer {
   private points!: Vector3[]
   private curves!: CatmullRomCurve3
   private tube!: Mesh
@@ -60,12 +58,11 @@ export default class Visualizer extends AudioAnalyser {
     target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5)
   }
 
-  private context: this = this
-
-  constructor() {
-    super()
-    this.init()
+  public init() {
+    this.load()
     this.render()
+    this.handleEvents()
+    window.requestAnimationFrame(this.render.bind(this))
   }
 
   public render() {
@@ -77,8 +74,6 @@ export default class Visualizer extends AudioAnalyser {
     this.updateMaterialOffset()
     this.updateCurve()
     this.renderer.render(this.scene, this.camera)
-
-    window.requestAnimationFrame(this.render.bind(this.context))
   }
 
   private animate() {
@@ -124,9 +119,9 @@ export default class Visualizer extends AudioAnalyser {
     this.animate()
   }
 
-  private init(): void {
+  private load(): void {
     this.renderer = new WebGLRenderer({
-      antialias: true,
+      antialias: false,
       canvas: document.querySelector('#scene') as HTMLCanvasElement
     })
     this.renderer.setSize(this._window.ww, this._window.wh)
@@ -181,8 +176,20 @@ export default class Visualizer extends AudioAnalyser {
 
     this.tubeGeometry.verticesNeedUpdate = true
 
+    this.curves.points[2].x = 0.6 * (1 - this.mouse.ratio.x) - 0.3
+    this.curves.points[3].x = 0
+    this.curves.points[4].x = 0.6 * (1 - this.mouse.ratio.x) - 0.3
+
+    this.curves.points[2].y = 0.6 * (1 - this.mouse.ratio.y) - 0.3
+    this.curves.points[3].y = 0
+    this.curves.points[4].y = 0.6 * (1 - this.mouse.ratio.y) - 0.3
+
     this.splineMesh.geometry.verticesNeedUpdate = true
     this.splineMesh.geometry.vertices = this.curves.getPoints(70)
+  }
+
+  private handleEvents(): void {
+    window.addEventListener('resize', this.onResize.bind(this), false)
   }
 
   /**

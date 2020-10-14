@@ -11,6 +11,7 @@
     "babel-plugin-wildcard": "^6.0.0",
     "core-js": "^3.6.5",
     "gsap": "^3.5.1",
+    "mixin.ts": "^1.0.1",
     "nprogress": "^0.2.0",
     "simplex-noise": "^2.4.0",
     "three": "^0.121.1",

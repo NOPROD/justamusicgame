@@ -1,7 +1,7 @@
 import { Audio, AudioLoader, Object3D } from 'three'
 
 export class AudioAnalyser {
-  [x: string]: any // Cause of extends in Visualizer >> Linter
+  [x: string]: any // Cause of extends >> Linter
 
   private listener!: AudioListener
   private audioLoader!: AudioLoader
@@ -12,19 +12,11 @@ export class AudioAnalyser {
     loop: false
   }
 
-  constructor() {
-    // Fix inheritance, seems THREE.js don't like if Audio is load before scene
-    // else it throw illegal constructor error
-    this.initAfterParent()
-  }
-
-  private initAfterParent() {
-    setTimeout(() => {
-      this.listener = new AudioListener()
-      if (this.camera) this.addToCamera()
-      this.sound = new Audio((this.listener as unknown) as THREE.AudioListener) // Linter, don't ask why...
-      this.audioLoader = new AudioLoader()
-    }, 0)
+  public setAudio() {
+    this.listener = new AudioListener()
+    if (this.camera) this.addToCamera()
+    this.sound = new Audio((this.listener as unknown) as THREE.AudioListener) // Linter, don't ask why...
+    this.audioLoader = new AudioLoader()
   }
 
   // Add audio to camera, so it's audible if camera move
