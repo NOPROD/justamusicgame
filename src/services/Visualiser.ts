@@ -11,12 +11,8 @@ import {
   PerspectiveCamera,
   Geometry,
   Line,
-  LineBasicMaterial,
-  Fog,
-  HemisphereLight
+  LineBasicMaterial
 } from 'three'
-
-import { TimelineMax, Power1, Power2 } from 'gsap'
 
 export class Visualizer {
   private points!: Vector3[]
@@ -43,7 +39,6 @@ export class Visualizer {
   }
 
   private scene!: Scene
-  private light!: HemisphereLight
   private camera!: PerspectiveCamera
   private renderer!: WebGLRenderer
   private _window: { ww: number; wh: number } = {
@@ -51,21 +46,20 @@ export class Visualizer {
     wh: window.innerHeight
   }
 
-  private speed = 1
+  private prevTime = 0
   private mouse = {
     position: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5),
     ratio: new Vector2(0, 0),
     target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5)
   }
 
-  public init() {
-    this.load()
-    this.render()
-    this.handleEvents()
-    window.requestAnimationFrame(this.render.bind(this))
+  constructor(scene: Scene, camera: PerspectiveCamera) {
+    this.scene = scene
+    this.camera = camera
   }
 
-  public render() {
+  public render(time?: number) {
+    if (time) this.prevTime = time
     this.createMesh()
     this.update()
   }
@@ -73,33 +67,6 @@ export class Visualizer {
   private update() {
     this.updateMaterialOffset()
     this.updateCurve()
-    this.renderer.render(this.scene, this.camera)
-  }
-
-  private animate() {
-    const hyperSpace = new TimelineMax({ repeat: -1 })
-    hyperSpace.to(this.textureParams, 4, {
-      repeatX: 0.3,
-      ease: Power1.easeInOut
-    })
-    hyperSpace.to(
-      this.textureParams,
-      12,
-      {
-        offsetX: 8,
-        ease: Power2.easeInOut
-      },
-      0
-    )
-    hyperSpace.to(
-      this.textureParams,
-      6,
-      {
-        repeatX: 10,
-        ease: Power2.easeInOut
-      },
-      '-=5'
-    )
   }
 
   private createMesh() {
@@ -115,31 +82,6 @@ export class Visualizer {
     this.meshLimit()
 
     this.scene.add(this.tube)
-    this.scene.add(this.light)
-    this.animate()
-  }
-
-  private load(): void {
-    this.renderer = new WebGLRenderer({
-      antialias: false,
-      canvas: document.querySelector('#scene') as HTMLCanvasElement
-    })
-    this.renderer.setSize(this._window.ww, this._window.wh)
-
-    this.camera = new PerspectiveCamera(
-      15,
-      this._window.ww / this._window.wh,
-      0.01,
-      1000
-    )
-    this.camera.rotation.y = Math.PI
-    this.camera.position.z = 0.35
-
-    this.scene = new Scene()
-
-    this.scene.fog = new Fog(0x000d25, 0.05, 1.6)
-
-    this.light = new HemisphereLight(0xe9eff2, 0x01010f, 1)
   }
 
   private meshLimit() {
@@ -188,7 +130,7 @@ export class Visualizer {
     this.splineMesh.geometry.vertices = this.curves.getPoints(70)
   }
 
-  private handleEvents(): void {
+  public handleEvents(): void {
     window.addEventListener('resize', this.onResize.bind(this), false)
   }
 
@@ -206,14 +148,19 @@ export class Visualizer {
     this.renderer.setSize(this._window.ww, this._window.wh)
   }
 
+  public getSettings() {
+    return { scene: this.scene, time: this.prevTime, curves: this.curves }
+  }
+
   /*
-   * Add 3D vector to points Array
+   * Divide Tunnel into 5 parts
+   * points[4].y = -0.06 >>> It's the end of tunnel, the last segment, so don't see a black hole
    */
   private getCurves(): CatmullRomCurve3 {
     for (let i = 0; i < 5; i++) {
       this.points.push(new Vector3(0, 0, (2.5 * i) / 4))
     }
-
+    this.points[4].y = -0.06
     return new CatmullRomCurve3(this.points)
   }
 
