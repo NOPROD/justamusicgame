@@ -20,7 +20,7 @@ import {
 import { TimelineMax, Power1, Power2 } from 'gsap'
 
 export default class Visualizer {
-  private points: Vector3[] = []
+  private points!: Vector3[]
   private curves!: CatmullRomCurve3
   private tube!: Mesh
 
@@ -59,6 +59,8 @@ export default class Visualizer {
     target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5)
   }
 
+  private context: this = this
+
   constructor() {
     this.init()
     this.render()
@@ -74,7 +76,7 @@ export default class Visualizer {
     this.updateCurve()
     this.renderer.render(this.scene, this.camera)
 
-    window.requestAnimationFrame(this.render.bind(this))
+    window.requestAnimationFrame(this.render.bind(this.context))
   }
 
   private animate() {
@@ -104,6 +106,7 @@ export default class Visualizer {
   }
 
   private createMesh() {
+    this.points = []
     this.curves = this.getCurves()
     this.tube = this.getTube()
 
