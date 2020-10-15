@@ -47,20 +47,17 @@ export class Visualizer {
     target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5)
   }
 
-  public render(time?: number) {
-    if (time) this.prevTime = time
-  }
-
   public getTime(): number {
     return this.prevTime
   }
 
-  public update() {
+  public update(time?: number): void {
+    if (time) this.prevTime = time
     this.updateMaterialOffset()
     this.updateCurve()
   }
 
-  public createMesh(): Mesh {
+  public createMesh(): void {
     this.points = []
     this.curves = this.createCurves()
     this.tube = this.createTube()
@@ -71,15 +68,21 @@ export class Visualizer {
     this.geometry.vertices = [this.curves.getPoint(70)]
 
     this.meshLimit()
+  }
 
+  public getTube(): Mesh {
     return this.tube
   }
 
-  private meshLimit() {
+  public getCurves(): CatmullRomCurve3 {
+    return this.curves
+  }
+
+  private meshLimit(): void {
     this.splineMesh = new Line(this.geometry, new LineBasicMaterial())
   }
 
-  private updateMaterialOffset() {
+  private updateMaterialOffset(): void {
     if (this.tubeMaterial.map) {
       this.tubeMaterial.map.offset.x = this.textureParams.offsetX
       this.tubeMaterial.map.offset.y += 0.001
@@ -90,7 +93,7 @@ export class Visualizer {
     }
   }
 
-  private updateCurve() {
+  private updateCurve(): void {
     let i = 0
     let index = 0
     var vertice_o = null

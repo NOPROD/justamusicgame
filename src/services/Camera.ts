@@ -14,11 +14,11 @@ class Camera {
     this.camera.position.z = 0.35
   }
 
-  public update() {
+  public update(): void {
     this.camera.updateProjectionMatrix()
   }
 
-  public onResize() {
+  public onResize(): void {
     this.camera.aspect = window.innerWidth / window.innerHeight
     this.camera.updateProjectionMatrix()
   }

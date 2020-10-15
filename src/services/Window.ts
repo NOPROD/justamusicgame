@@ -10,7 +10,7 @@ export class WindowService {
    * Update camera
    * Update renderer
    **/
-  private onResize() {
+  private onResize(): void {
     camera.onResize()
     renderer.onResize()
   }

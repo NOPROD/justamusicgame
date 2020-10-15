@@ -1,4 +1,4 @@
-import { Camera, Object3D, Scene, WebGLRenderer } from 'three'
+import { Camera, Scene, WebGLRenderer } from 'three'
 
 class Renderer {
   private renderer!: WebGLRenderer

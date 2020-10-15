@@ -22,6 +22,7 @@
     AudioAnalyser,
     Fog,
     HemisphereLight,
+    Object3D,
     PerspectiveCamera,
     Scene,
     WebGLRenderer
@@ -29,11 +30,13 @@
 
   @Component
   export default class World extends Vue {
-    private world!: {
-      visualizer: Visualizer
-      particles?: Particle[]
-    }
-    private speed: number = 1
+    private world: {
+      particles?: Particle[] | []
+    } = { particles: [] }
+
+    private particles: number = 70
+    private speed: number = 8
+    private time: number = 1
 
     mounted() {
       renderer.create()
@@ -47,46 +50,36 @@
 
       scene.add3DObject(light.get())
 
-      visualizer.render()
-      var tube = visualizer.createMesh()
-      scene.add3DObject(tube)
+      visualizer.createMesh()
+      scene.add3DObject(visualizer.getTube())
 
       windowService.handleEvents()
-
+      this.addParticles()
       this.animate()
     }
 
-    private animate() {
-      visualizer.update()
+    private animate(time?: number) {
+      if (time) this.time = time
 
-      // if (this.world.particles) {
-      //   for (var i = 0; i < this.world.particles.length; i++) {
-      //     this.world.particles[i].update(
-      //       this.speed,
-      //       this.world.visualizer.get
-      //     )
-      //     if (
-      //       this.world.particles[i].burst &&
-      //       this.world.particles[i].percent > 1
-      //     ) {
-      //       this.world.particles.splice(i, 1)
-      //       i--
-      //     }
-      //   }
-      // }
+      visualizer.update(time ? time : this.time)
 
+      for (var i = 0; i < this.world.particles.length; i++) {
+        this.world.particles[i].update(this.speed, visualizer.getCurves())
+      }
+      console.log(this.time)
       renderer.render(scene.get(), camera.get())
       window.requestAnimationFrame(this.animate.bind(this))
     }
 
-    // private addParticles() {
-    //   this.world.particles = []
-    //   for (var i = 0; i < 70; i++) {
-    //     this.world.particles.push(
-    //       new Particle(scene.get(), false, visualizer.getTime())
-    //     )
-    //   }
-    // }
+    private addParticles(): void {
+      this.world.particles = []
+      for (var i = 0; i < this.particles; i++) {
+        var particles = new Particle(false, this.time)
+        this.world.particles.push(particles)
+        scene.add3DObject(particles.getMaterial())
+      }
+      console.log(this.world.particles)
+    }
   }
 </script>
 

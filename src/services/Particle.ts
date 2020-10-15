@@ -14,13 +14,6 @@ export class Particle {
   public percent!: number
   public burst!: boolean
 
-  private cube: BoxBufferGeometry = new BoxBufferGeometry(1, 1, 1)
-  private sphere: SphereBufferGeometry = new SphereBufferGeometry(1, 6, 6)
-  private icosahedron: IcosahedronBufferGeometry = new IcosahedronBufferGeometry(
-    1,
-    0
-  )
-
   private object!:
     | BoxBufferGeometry
     | SphereBufferGeometry
@@ -40,8 +33,9 @@ export class Particle {
 
   private position!: Vector3
 
-  constructor(scene: Scene, burst: boolean, time: number) {
-    this.setRandomObject()
+  constructor(burst: boolean, time: number) {
+    console.log('hi')
+    this.object = this.setRandomObject()
     this.color = this.setRandomColor(burst, time)
     this.material = new MeshPhongMaterial({
       color: this.color,
@@ -66,11 +60,9 @@ export class Particle {
       Math.random() * 0.01
     )
     this.position = new Vector3(0, 0, 0)
-
-    scene.add(this.mesh)
   }
 
-  public update(speed: number, curves: CatmullRomCurve3) {
+  public update(speed: number, curves: CatmullRomCurve3): void {
     this.percent += this.speed * (this.burst ? 1 : speed)
 
     this.position = curves
@@ -84,7 +76,11 @@ export class Particle {
     this.mesh.rotation.z += this.rotate.z
   }
 
-  private explode() {
+  public getMaterial(): Mesh {
+    return this.mesh
+  }
+
+  private explode(): void {
     this.speed += 0.003
     this.mesh.scale.x *= 1.4
     this.mesh.scale.y *= 1.4
@@ -92,16 +88,19 @@ export class Particle {
   }
 
   // Get random particles form
-  private setRandomObject() {
+  private setRandomObject():
+    | BoxBufferGeometry
+    | SphereBufferGeometry
+    | IcosahedronBufferGeometry {
     const random = Math.random()
     return random > 0.9
-      ? this.cube
+      ? new BoxBufferGeometry(1, 1, 1)
       : random > 0.8
-      ? this.sphere
-      : this.icosahedron
+      ? new SphereBufferGeometry(1, 6, 6)
+      : new IcosahedronBufferGeometry(1, 0)
   }
 
-  private setRandomColor(burst: boolean, time: number) {
+  private setRandomColor(burst: boolean, time: number): Color {
     return burst
       ? new Color('hsl(' + time / 50 + ',100%,60%)')
       : new Color(
