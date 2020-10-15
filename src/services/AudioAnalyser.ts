@@ -1,6 +1,6 @@
 import { Audio, AudioLoader, Object3D } from 'three'
 
-export class AudioAnalyser {
+class AudioAnalyser {
   [x: string]: any // Cause of extends >> Linter
 
   private listener!: AudioListener
@@ -37,3 +37,4 @@ export class AudioAnalyser {
     this.sound.setVolume(volume)
   }
 }
+export const audioAnalyser = new AudioAnalyser()

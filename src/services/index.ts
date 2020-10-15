@@ -1,3 +1,7 @@
 export * from './AudioAnalyser'
 export * from './Visualiser'
 export * from './Particle'
+export * from './Camera'
+export * from './Renderer'
+export * from './Scene'
+export * from './Light'
