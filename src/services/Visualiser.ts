@@ -5,14 +5,13 @@ import {
   MeshStandardMaterial,
   Mesh,
   BackSide,
-  Scene,
   Vector2,
-  WebGLRenderer,
-  PerspectiveCamera,
   Geometry,
   Line,
   LineBasicMaterial
 } from 'three'
+
+import { scene } from '@/services'
 
 export class Visualizer {
   private points!: Vector3[]
@@ -38,9 +37,6 @@ export class Visualizer {
     repeatY: 4
   }
 
-  private scene!: Scene
-  private camera!: PerspectiveCamera
-  private renderer!: WebGLRenderer
   private _window: { ww: number; wh: number } = {
     ww: window.innerWidth,
     wh: window.innerHeight
@@ -53,23 +49,20 @@ export class Visualizer {
     target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5)
   }
 
-  constructor(scene: Scene, camera: PerspectiveCamera) {
-    this.scene = scene
-    this.camera = camera
-  }
-
   public render(time?: number) {
     if (time) this.prevTime = time
-    this.createMesh()
-    this.update()
   }
 
-  private update() {
+  public getTime(): number {
+    return this.prevTime
+  }
+
+  public update() {
     this.updateMaterialOffset()
     this.updateCurve()
   }
 
-  private createMesh() {
+  public createMesh(): Mesh {
     this.points = []
     this.curves = this.getCurves()
     this.tube = this.getTube()
@@ -81,7 +74,7 @@ export class Visualizer {
 
     this.meshLimit()
 
-    this.scene.add(this.tube)
+    return this.tube
   }
 
   private meshLimit() {
@@ -130,28 +123,6 @@ export class Visualizer {
     this.splineMesh.geometry.vertices = this.curves.getPoints(70)
   }
 
-  public handleEvents(): void {
-    window.addEventListener('resize', this.onResize.bind(this), false)
-  }
-
-  /**
-   * On window resize :
-   * Update camera
-   * Update renderer
-   **/
-  private onResize() {
-    this._window.ww = window.innerWidth
-    this._window.wh = window.innerHeight
-
-    this.camera.aspect = this._window.ww / this._window.wh
-    this.camera.updateProjectionMatrix()
-    this.renderer.setSize(this._window.ww, this._window.wh)
-  }
-
-  public getSettings() {
-    return { scene: this.scene, time: this.prevTime, curves: this.curves }
-  }
-
   /*
    * Divide Tunnel into 5 parts
    * points[4].y = -0.06 >>> It's the end of tunnel, the last segment, so don't see a black hole
@@ -176,3 +147,5 @@ export class Visualizer {
     return new Mesh(this.tubeGeometry, this.tubeMaterial)
   }
 }
+
+export const visualizer = new Visualizer()

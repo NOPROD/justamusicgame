@@ -13,7 +13,9 @@
     renderer,
     camera,
     scene,
-    light
+    light,
+    windowService,
+    visualizer
   } from '@/services'
   import { set } from 'vue/types/umd'
   import {
@@ -47,47 +49,46 @@
         scene.add3DObject(this.light)
       }, 0)
 
-      this.world = {
-        visualizer: new Visualizer(scene.get(), camera.get())
-      }
-      this.world.visualizer.handleEvents()
-      this.addParticles()
+      visualizer.render()
+      var tube = visualizer.createMesh()
+      scene.add3DObject(tube)
+
+      windowService.handleEvents()
 
       this.animate()
     }
 
     private animate() {
-      this.world.visualizer.render()
+      visualizer.update()
 
-      if (this.world.particles) {
-        for (var i = 0; i < this.world.particles.length; i++) {
-          this.world.particles[i].update(
-            this.speed,
-            this.world.visualizer.getSettings().curves
-          )
-          if (
-            this.world.particles[i].burst &&
-            this.world.particles[i].percent > 1
-          ) {
-            this.world.particles.splice(i, 1)
-            i--
-          }
-        }
-      }
+      // if (this.world.particles) {
+      //   for (var i = 0; i < this.world.particles.length; i++) {
+      //     this.world.particles[i].update(
+      //       this.speed,
+      //       this.world.visualizer.get
+      //     )
+      //     if (
+      //       this.world.particles[i].burst &&
+      //       this.world.particles[i].percent > 1
+      //     ) {
+      //       this.world.particles.splice(i, 1)
+      //       i--
+      //     }
+      //   }
+      // }
 
       renderer.render(scene.get(), camera.get())
       window.requestAnimationFrame(this.animate.bind(this))
     }
 
-    private addParticles() {
-      this.world.particles = []
-      for (var i = 0; i < 70; i++) {
-        const settings = this.world.visualizer.getSettings()
-        this.world.particles.push(
-          new Particle(scene.get(), false, settings.time)
-        )
-      }
-    }
+    // private addParticles() {
+    //   this.world.particles = []
+    //   for (var i = 0; i < 70; i++) {
+    //     this.world.particles.push(
+    //       new Particle(scene.get(), false, visualizer.getTime())
+    //     )
+    //   }
+    // }
   }
 </script>
 

@@ -15,6 +15,10 @@ class Renderer {
     this.renderer.render(element, camera)
   }
 
+  public onResize() {
+    this.renderer.setSize(window.innerWidth, window.innerHeight)
+  }
+
   public get(): WebGLRenderer {
     return this.renderer
   }

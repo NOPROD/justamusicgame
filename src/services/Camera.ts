@@ -3,7 +3,7 @@ import { PerspectiveCamera } from 'three'
 class Camera {
   private camera!: PerspectiveCamera
 
-  create(): void {
+  public create(): void {
     this.camera = new PerspectiveCamera(
       15,
       window.innerWidth / window.innerHeight,
@@ -14,7 +14,16 @@ class Camera {
     this.camera.position.z = 0.35
   }
 
-  get(): PerspectiveCamera {
+  public update() {
+    this.camera.updateProjectionMatrix()
+  }
+
+  public onResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight
+    this.camera.updateProjectionMatrix()
+  }
+
+  public get(): PerspectiveCamera {
     return this.camera
   }
 }
