@@ -11,8 +11,6 @@ import {
   LineBasicMaterial
 } from 'three'
 
-import { scene } from '@/services'
-
 export class Visualizer {
   private points!: Vector3[]
   private curves!: CatmullRomCurve3
@@ -64,8 +62,8 @@ export class Visualizer {
 
   public createMesh(): Mesh {
     this.points = []
-    this.curves = this.getCurves()
-    this.tube = this.getTube()
+    this.curves = this.createCurves()
+    this.tube = this.createTube()
 
     this.curves.type = 'catmullrom'
 
@@ -127,7 +125,7 @@ export class Visualizer {
    * Divide Tunnel into 5 parts
    * points[4].y = -0.06 >>> It's the end of tunnel, the last segment, so don't see a black hole
    */
-  private getCurves(): CatmullRomCurve3 {
+  private createCurves(): CatmullRomCurve3 {
     for (let i = 0; i < 5; i++) {
       this.points.push(new Vector3(0, 0, (2.5 * i) / 4))
     }
@@ -135,7 +133,7 @@ export class Visualizer {
     return new CatmullRomCurve3(this.points)
   }
 
-  private getTube(): Mesh {
+  private createTube(): Mesh {
     this.tubeGeometry = new TubeGeometry(this.curves, 70, 0.02, 50, false)
     this._tubeGeometry_old = this.tubeGeometry.clone()
 

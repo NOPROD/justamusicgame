@@ -33,7 +33,6 @@
       visualizer: Visualizer
       particles?: Particle[]
     }
-    private light!: HemisphereLight
     private speed: number = 1
 
     mounted() {
@@ -45,9 +44,8 @@
       scene.addProperty('fog', new Fog(0x000d25, 0.05, 1.6))
 
       light.create()
-      setTimeout(() => {
-        scene.add3DObject(this.light)
-      }, 0)
+
+      scene.add3DObject(light.get())
 
       visualizer.render()
       var tube = visualizer.createMesh()
