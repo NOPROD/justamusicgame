@@ -21,8 +21,8 @@ export class Particle {
   private color!: Color
 
   private radius: number = Math.random() * 0.002 + 0.0003
-  private range: number = 500
-  private offset: number | Vector3 = 180
+  private range: number = 200
+  private offset: number | Vector3 = 1
   private material!: MeshPhongMaterial
 
   private mesh!: Mesh
@@ -31,6 +31,9 @@ export class Particle {
   private rotate!: Vector3
 
   private position!: Vector3
+
+  private grid = [-0.005, +0.007, 0]
+  private random = Math.floor(Math.random() * this.grid.length)
 
   constructor(burst: boolean, time: number) {
     this.object = this.setRandomObject()
@@ -44,11 +47,6 @@ export class Particle {
     this.mesh.position.set(0, 0, 1.5)
     this.percent = burst ? 0.2 : Math.random()
     this.burst = burst
-    this.offset = new Vector3(
-      (Math.random() - 0.5) * 0.025,
-      (Math.random() - 0.5) * 0.025,
-      0
-    )
     this.speed = Math.random() * 0.004 + 0.0002
     if (this.burst) this.explode()
 
@@ -62,12 +60,9 @@ export class Particle {
 
   public update(speed: number, curves: CatmullRomCurve3): void {
     this.percent += this.speed * (this.burst ? 1 : speed)
-
-    this.position = curves
-      .getPoint(1 - (this.percent % 1))
-      .add(this.offset as Vector3)
-    this.mesh.position.x = this.position.x
-    this.mesh.position.y = this.position.y
+    this.position = curves.getPoint(1 - (this.percent % 1))
+    this.mesh.position.x = this.position.x + this.grid[this.random]
+    this.mesh.position.y = this.position.y - 0.003 // -0.003
     this.mesh.position.z = this.position.z + 0.3
     this.mesh.rotation.x += this.rotate.x
     this.mesh.rotation.y += this.rotate.y
