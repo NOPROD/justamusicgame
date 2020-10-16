@@ -1,5 +1,6 @@
 import {
   Audio as ThreeAudio,
+  AudioAnalyser as ThreeAudioAnalyser,
   AudioListener,
   AudioLoader,
   Camera,
@@ -27,19 +28,19 @@ class AudioAnalyser {
     camera.add((this.listener as unknown) as Object3D) // Yeah linter..
   }
 
-  async loadAudio(sound: any) {
-    // this.audioLoader = new AudioLoader()
-    // this.audioLoader.load(soundPath, (buffer: AudioBuffer) => {
-    //   console.log(buffer)
-    //   this.sound.setBuffer(buffer)
-    //   this.sound.setLoop(this.options.loop)
-    //   this.sound.setVolume(this.options.volume)
-    //   this.sound.play()
-    // })
+  public loadAudio(sound: any) {
     const mediaElement = new Audio(sound)
     this.sound.setMediaElementSource(mediaElement)
-
     mediaElement.play()
+    this.analyse()
+  }
+
+  public analyse() {
+    const analyser = new ThreeAudioAnalyser(this.sound, 32)
+    setInterval(() => {
+      console.log(analyser.getFrequencyData())
+      console.log(analyser.getAverageFrequency())
+    }, 1000)
   }
 
   public setVolume(volume: number) {
