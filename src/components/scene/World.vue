@@ -13,8 +13,18 @@
     private engine!: Engine
 
     mounted() {
-      this.engine = new Engine()
-      this.engine.start()
+      this.waitForFirstInteraction()
+    }
+
+    private waitForFirstInteraction(): void {
+      window.addEventListener(
+        'click',
+        () => {
+          this.engine = new Engine()
+          this.engine.start()
+        },
+        { once: true }
+      )
     }
   }
 </script>

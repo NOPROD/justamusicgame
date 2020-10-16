@@ -6,7 +6,8 @@ import {
   scene,
   light,
   windowService,
-  visualizer
+  visualizer,
+  audioAnalyser
 } from './'
 
 export class Engine {
@@ -39,6 +40,10 @@ export class Engine {
     scene.add3DObject(visualizer.getTube())
 
     windowService.handleEvents()
+
+    audioAnalyser.setAudio()
+    audioAnalyser.loadAudio('/song/music/Z.ogg')
+
     this.addParticles()
     this.animate()
   }
