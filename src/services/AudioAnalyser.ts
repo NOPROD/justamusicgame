@@ -27,8 +27,8 @@ class AudioAnalyser {
     camera.add((this.listener as unknown) as Object3D) // Yeah linter..
   }
 
-  public loadAudio(soundPath: string) {
-    this.audioLoader = new AudioLoader()
+  async loadAudio(sound: any) {
+    // this.audioLoader = new AudioLoader()
     // this.audioLoader.load(soundPath, (buffer: AudioBuffer) => {
     //   console.log(buffer)
     //   this.sound.setBuffer(buffer)
@@ -36,7 +36,7 @@ class AudioAnalyser {
     //   this.sound.setVolume(this.options.volume)
     //   this.sound.play()
     // })
-    const mediaElement = new Audio(soundPath)
+    const mediaElement = new Audio(sound)
     this.sound.setMediaElementSource(mediaElement)
 
     mediaElement.play()

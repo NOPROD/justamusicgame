@@ -11,6 +11,7 @@ import {
 } from './'
 
 export class Engine {
+  songOne = require('./../assets/song/music/Z.ogg')
   private world: {
     particles: Particle[] | []
   } = { particles: [] }
@@ -42,7 +43,7 @@ export class Engine {
     windowService.handleEvents()
 
     audioAnalyser.setAudio()
-    audioAnalyser.loadAudio('/song/music/Z.ogg')
+    audioAnalyser.loadAudio(this.songOne)
 
     this.addParticles()
     this.animate()
