@@ -15,7 +15,7 @@ export class Engine {
   } = { particles: [] }
 
   private particles: number = 70
-  private speed: number = 8
+  private speed: number = 0.5
   private time: number = 1
 
   constructor(
@@ -58,7 +58,7 @@ export class Engine {
   private addParticles(): void {
     this.world.particles = []
     for (var i = 0; i < this.particles; i++) {
-      var particles = new Particle(true, this.time)
+      var particles = new Particle(false, this.time)
       this.world.particles.push(particles as never)
       scene.add3DObject(particles.getMaterial())
     }

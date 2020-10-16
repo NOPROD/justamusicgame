@@ -21,7 +21,7 @@ export class Particle {
   private color!: Color
 
   private radius: number = Math.random() * 0.002 + 0.0003
-  private range: number = 50
+  private range: number = 500
   private offset: number | Vector3 = 180
   private material!: MeshPhongMaterial
 
@@ -68,7 +68,7 @@ export class Particle {
       .add(this.offset as Vector3)
     this.mesh.position.x = this.position.x
     this.mesh.position.y = this.position.y
-    this.mesh.position.z = this.position.z
+    this.mesh.position.z = this.position.z + 0.3
     this.mesh.rotation.x += this.rotate.x
     this.mesh.rotation.y += this.rotate.y
     this.mesh.rotation.z += this.rotate.z

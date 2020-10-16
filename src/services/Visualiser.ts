@@ -41,7 +41,7 @@ export class Visualizer {
   }
 
   private prevTime = 0
-  private mouse = {
+  private path = {
     position: new Vector2(this._window.ww * 0.5, this._window.wh * 0.7),
     ratio: new Vector2(0, 0),
     target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.7)
@@ -111,14 +111,19 @@ export class Visualizer {
     }
 
     this.tubeGeometry.verticesNeedUpdate = true
+    this.path.position.x += (this.path.target.x - this.path.position.x) / 30
+    this.path.position.y += (this.path.target.y - this.path.position.y) / 30
 
-    this.curves.points[2].x = 0.6 * (1 - this.mouse.ratio.x) - 0.3
+    this.path.ratio.x = this.path.position.x / this._window.ww
+    this.path.ratio.y = this.path.position.y / this._window.wh
+
+    this.curves.points[2].x = 0.6 * (1 - this.path.ratio.x) - 0.3
     this.curves.points[3].x = 0
-    this.curves.points[4].x = 0.6 * (1 - this.mouse.ratio.x) - 0.3
+    this.curves.points[4].x = 0.6 * (1 - this.path.ratio.x) - 0.3
 
-    this.curves.points[2].y = 0.6 * (1 - this.mouse.ratio.y) - 0.3
+    this.curves.points[2].y = 0.6 * (1 - this.path.ratio.y) - 0.3
     this.curves.points[3].y = 0
-    this.curves.points[4].y = 0.6 * (1 - this.mouse.ratio.y) - 0.3
+    this.curves.points[4].y = 0.6 * (1 - this.path.ratio.y) - 0.3
 
     this.splineMesh.geometry.verticesNeedUpdate = true
     this.splineMesh.geometry.vertices = this.curves.getPoints(70)
@@ -132,7 +137,7 @@ export class Visualizer {
     for (let i = 0; i < 5; i++) {
       this.points.push(new Vector3(0, 0, (2.5 * i) / 4))
     }
-    this.points[4].y = -0.06
+    this.points[4].y = 0.5
     return new CatmullRomCurve3(this.points)
   }
 

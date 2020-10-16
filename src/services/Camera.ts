@@ -11,7 +11,7 @@ class Camera {
       100
     )
     this.camera.rotation.y = Math.PI
-    this.camera.position.z = 0.35
+    this.camera.position.z = 0.3
   }
 
   public update(): void {
