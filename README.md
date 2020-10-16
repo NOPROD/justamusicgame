@@ -1,4 +1,4 @@
-# personal-site
+# justamusicgame
 
 ## Project setup
 
