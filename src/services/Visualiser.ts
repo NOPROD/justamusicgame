@@ -42,9 +42,9 @@ export class Visualizer {
 
   private prevTime = 0
   private mouse = {
-    position: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5),
+    position: new Vector2(this._window.ww * 0.5, this._window.wh * 0.7),
     ratio: new Vector2(0, 0),
-    target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.5)
+    target: new Vector2(this._window.ww * 0.5, this._window.wh * 0.7)
   }
 
   public getTime(): number {
@@ -137,7 +137,7 @@ export class Visualizer {
   }
 
   private createTube(): Mesh {
-    this.tubeGeometry = new TubeGeometry(this.curves, 70, 0.02, 50, false)
+    this.tubeGeometry = new TubeGeometry(this.curves, 70, 0.02, 30, false)
     this._tubeGeometry_old = this.tubeGeometry.clone()
 
     this.tubeMaterial = new MeshStandardMaterial({

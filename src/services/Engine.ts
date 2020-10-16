@@ -11,7 +11,7 @@ import {
 
 export class Engine {
   private world: {
-    particles?: Particle[] | []
+    particles: Particle[] | []
   } = { particles: [] }
 
   private particles: number = 70
@@ -51,7 +51,6 @@ export class Engine {
     for (var i = 0; i < this.world.particles.length; i++) {
       this.world.particles[i].update(this.speed, visualizer.getCurves())
     }
-    console.log(this.time)
     renderer.render(scene.get(), camera.get())
     window.requestAnimationFrame(this.animate.bind(this))
   }
@@ -60,9 +59,9 @@ export class Engine {
     this.world.particles = []
     for (var i = 0; i < this.particles; i++) {
       var particles = new Particle(true, this.time)
-      this.world.particles.push(particles)
+      this.world.particles.push(particles as never)
       scene.add3DObject(particles.getMaterial())
     }
-    console.log(this.world.particles)
+    console.log(this)
   }
 }

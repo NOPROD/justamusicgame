@@ -8,7 +8,7 @@ class Camera {
       15,
       window.innerWidth / window.innerHeight,
       0.01,
-      1000
+      100
     )
     this.camera.rotation.y = Math.PI
     this.camera.position.z = 0.35

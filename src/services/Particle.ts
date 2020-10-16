@@ -5,7 +5,6 @@ import {
   IcosahedronBufferGeometry,
   Mesh,
   MeshPhongMaterial,
-  Scene,
   SphereBufferGeometry,
   Vector3
 } from 'three'
@@ -34,7 +33,6 @@ export class Particle {
   private position!: Vector3
 
   constructor(burst: boolean, time: number) {
-    console.log('hi')
     this.object = this.setRandomObject()
     this.color = this.setRandomColor(burst, time)
     this.material = new MeshPhongMaterial({
