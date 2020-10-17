@@ -11,6 +11,7 @@
   @Component
   export default class World extends Vue {
     private engine!: Engine
+    private fps: number = 60
 
     mounted() {
       this.waitForFirstInteraction()
@@ -20,7 +21,7 @@
       window.addEventListener(
         'click',
         () => {
-          this.engine = new Engine()
+          this.engine = new Engine(this.fps)
           this.engine.start()
         },
         { once: true }

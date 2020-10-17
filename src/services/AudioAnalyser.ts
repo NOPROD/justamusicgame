@@ -17,6 +17,8 @@ class AudioAnalyser {
     loop: false
   }
 
+  private threeAudio!: ThreeAudioAnalyser
+
   public setAudio(camera?: Camera) {
     this.listener = new AudioListener()
     if (camera) this.addToCamera(camera)
@@ -32,15 +34,11 @@ class AudioAnalyser {
     const mediaElement = new Audio(sound)
     this.sound.setMediaElementSource(mediaElement)
     mediaElement.play()
-    this.analyse()
   }
 
   public analyse() {
-    const analyser = new ThreeAudioAnalyser(this.sound, 32)
-    setInterval(() => {
-      console.log(analyser.getFrequencyData())
-      console.log(analyser.getAverageFrequency())
-    }, 1000)
+    this.threeAudio = new ThreeAudioAnalyser(this.sound)
+    const dataArray = new Uint8Array(this.threeAudio.analyser.frequencyBinCount)
   }
 
   public setVolume(volume: number) {

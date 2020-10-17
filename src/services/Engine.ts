@@ -1,4 +1,4 @@
-import { Fog } from 'three'
+import { Clock, Fog } from 'three'
 import {
   Particle,
   renderer,
@@ -21,12 +21,17 @@ export class Engine {
   private speed: number = 0.5
   private time: number = 1
 
+  private clock!: Clock
+
   constructor(
+    private fps: number,
     private songName = 'debug session',
     private userName = 'debug session'
   ) {}
 
   public start() {
+    this.clock = new Clock()
+
     renderer.create()
 
     camera.create()
@@ -47,7 +52,16 @@ export class Engine {
     audioAnalyser.loadAudio(songs.snails.file)
 
     this.addParticles()
-    this.animate()
+
+    this.run()
+  }
+
+  private run(time?: number) {
+    const ticks = this.getTicks()
+    for (let i = 0; i < ticks; i++) {
+      this.animate(time ? time : undefined)
+    }
+    requestAnimationFrame(this.run.bind(this))
   }
 
   private animate(time?: number) {
@@ -59,7 +73,6 @@ export class Engine {
       this.world.particles[i].update(this.speed, visualizer.getCurves())
     }
     renderer.render(scene.get(), camera.get())
-    window.requestAnimationFrame(this.animate.bind(this))
   }
 
   private addParticles(): void {
@@ -70,5 +83,9 @@ export class Engine {
       scene.add3DObject(particles.getMaterial())
     }
     console.log(this)
+  }
+
+  private getTicks(): number {
+    return Math.round(this.clock.getDelta() / (1 / this.fps))
   }
 }
