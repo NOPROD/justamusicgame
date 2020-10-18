@@ -24,14 +24,13 @@ export class AssetsManager {
   }
 
   public set3DAnimation(models: any): any {
-    Object.values(models).forEach((themes: any) => {
-      Object.values(themes).forEach((model: any) => {
-        const animsByName: any = {}
-        model.animations.forEach((clip: any) => {
-          animsByName[clip.name] = clip
-        })
-        model.animations = animsByName
+    Object.values(models).forEach((model: any) => {
+      const animsByName: any = {}
+      console.log(model)
+      model.animations.forEach((clip: any) => {
+        animsByName[clip.name] = clip
       })
+      model.animations = animsByName
     })
   }
 }

@@ -71,12 +71,11 @@ class Space {
     this.scene.add(this.backSphere)
     this.scene.add(this.camera)
 
-    // const models3D = assetManager.load3DModels()
-    // console.log(models3D)
-    // setTimeout(() => {
-    //   console.log(models3D.jellyFish.scene)
-    //   this.scene.add(models3D)
-    // }, 5000)
+    const models3D = assetManager.load3DModels()
+    setTimeout(() => {
+      this.scene.add(models3D)
+      assetManager.set3DAnimation(models3D)
+    }, 5000)
     this.render()
   }
 
