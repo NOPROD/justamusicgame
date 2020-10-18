@@ -14,6 +14,15 @@ class Camera {
     this.camera.position.z = 0.3
   }
 
+  public create2(): PerspectiveCamera {
+    return new PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
+  }
+
   public update(): void {
     this.camera.updateProjectionMatrix()
   }

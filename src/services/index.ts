@@ -7,5 +7,7 @@ export * from './Scene'
 export * from './Light'
 export * from './Window'
 export * from './Player'
-export * from './Engine'
+export * from './GameEngine'
 export * from './AssetsManager'
+
+export * from './Space'

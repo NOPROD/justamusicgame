@@ -6,7 +6,7 @@
 
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
-  import { Engine } from '@/services'
+  import { Engine, space } from '@/services'
 
   @Component
   export default class World extends Vue {
@@ -21,8 +21,9 @@
       window.addEventListener(
         'click',
         () => {
-          this.engine = new Engine(this.fps)
-          this.engine.start()
+          // this.engine = new Engine(this.fps)
+          // this.engine.start()
+          space.initSpace()
         },
         { once: true }
       )
