@@ -2,11 +2,9 @@ import {
   DoubleSide,
   Mesh,
   MeshPhongMaterial,
-  Object3D,
   PerspectiveCamera,
   RepeatWrapping,
   Scene,
-  SkeletonHelper,
   SphereGeometry,
   SpotLight,
   Texture,
@@ -33,7 +31,7 @@ class Space {
 
   private renderer!: WebGLRenderer
 
-  public initSpace() {
+  public async initSpace() {
     this.scene = new Scene()
     this.camera = camera.create2()
     this.renderer = new WebGLRenderer({
@@ -61,21 +59,24 @@ class Space {
     const spotLight = new SpotLight(0x5192e9)
     spotLight.position.set(-40, 60, -10)
     spotLight.intensity = 1.5
-    this.scene.add(spotLight)
 
     const spotLight2 = new SpotLight(0xffffff)
     spotLight2.position.set(40, -60, 30)
     spotLight2.intensity = 1.5
+    console.log('hi')
+    assetManager.load3DModels().then(console.log)
+    const models3D = await assetManager.load3DModels()
+    console.log(models3D)
+    console.log('hi')
+
+    this.scene.add(spotLight)
+
     this.scene.add(spotLight2)
 
     this.scene.add(this.backSphere)
     this.scene.add(this.camera)
 
-    const models3D = assetManager.load3DModels()
-    setTimeout(() => {
-      this.scene.add(models3D)
-      assetManager.set3DAnimation(models3D)
-    }, 5000)
+    this.scene.add(models3D)
     this.render()
   }
 
