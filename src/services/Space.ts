@@ -14,10 +14,12 @@ import {
 
 import { camera } from '.'
 
-import test from './../assets/background/space/Nebula_Blue.png'
+import TextureBlue from './../assets/background/space/Nebula_Blue.png'
+import TextureRed from './../assets/background/space/Nebula_Red.png'
+import TexturePink from './../assets/background/space/Nebula_Aqua_Pink.png'
 
 class Space {
-  private texture!: Texture
+  private texture: { blue?: Texture; red?: Texture; pink?: Texture } = {}
   private geo!: SphereGeometry
   private material!: MeshPhongMaterial
 
@@ -38,13 +40,14 @@ class Space {
     })
     this.renderer.setSize(window.innerWidth, window.innerHeight)
 
-    this.texture = new TextureLoader().load(test)
+    this.texture.blue = new TextureLoader().load(TextureBlue)
+    this.texture.red = new TextureLoader().load(TextureRed)
+    this.texture.pink = new TextureLoader().load(TexturePink)
     this.geo = new SphereGeometry(20, 20, 20)
     this.material = new MeshPhongMaterial()
-    this.material.map = this.texture
+    this.material.map = this.texture.blue
 
     this.backSphere = new Mesh(this.geo, this.material)
-
     this.backSphere.material.side = DoubleSide
     this.backSphere.material.map.wrapS = RepeatWrapping
     this.backSphere.material.map.wrapT = RepeatWrapping
@@ -69,6 +72,19 @@ class Space {
     this.scene.add(this.backSphere)
     this.scene.add(this.camera)
     this.render()
+
+    setTimeout(() => {
+      this.changeTexture('red')
+    }, 3000)
+  }
+
+  private changeTexture(texture: 'pink' | 'red' | 'blue'): void {
+    this.backSphere.material.map = this.texture[texture]
+    this.backSphere.material.side = DoubleSide
+    this.backSphere.material.map.wrapS = RepeatWrapping
+    this.backSphere.material.map.wrapT = RepeatWrapping
+    this.backSphere.material.map.repeat.set(5, 3)
+    this.backSphere.material.needsUpdate = true
   }
 
   private render() {
