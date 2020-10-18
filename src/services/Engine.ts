@@ -32,6 +32,24 @@ export class Engine {
   public start() {
     this.clock = new Clock()
 
+    this.initScene()
+
+    this.initUtils()
+
+    this.addDynamicsElements()
+
+    this.run()
+  }
+
+  private run(time?: number) {
+    const ticks = this.getTicks()
+    for (let i = 0; i < ticks; i++) {
+      this.animate(time ? time : undefined)
+    }
+    requestAnimationFrame(this.run.bind(this))
+  }
+
+  private initScene(): void {
     renderer.create()
 
     camera.create()
@@ -45,23 +63,17 @@ export class Engine {
 
     visualizer.createMesh()
     scene.add3DObject(visualizer.getTube())
+  }
 
+  private initUtils(): void {
     windowService.handleEvents()
 
     audioAnalyser.setAudio()
     audioAnalyser.loadAudio(songs.snails.file)
-
-    this.addParticles()
-
-    this.run()
   }
 
-  private run(time?: number) {
-    const ticks = this.getTicks()
-    for (let i = 0; i < ticks; i++) {
-      this.animate(time ? time : undefined)
-    }
-    requestAnimationFrame(this.run.bind(this))
+  private addDynamicsElements() {
+    this.addParticles()
   }
 
   private animate(time?: number) {
