@@ -4,6 +4,7 @@ export interface License {
     creator: Link | Link[]
     source: string
     license: Link
+    cover?: string
   }
 }
 

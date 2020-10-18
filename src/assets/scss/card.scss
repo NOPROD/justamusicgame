@@ -1,0 +1,20 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid black;
+  padding: 0.5em;
+  background-color: wheat;
+  max-width: 30em;
+}
+.card_title {
+  font-family: 'Lato', sans-serif;
+}
+
+.card_description {
+  margin: auto;
+}
+.card_picture > img {
+  width: 8.5em;
+  height: 8.5em;
+}

@@ -1,15 +1,15 @@
 <template>
-  <div class="home">
-    <World />
-  </div>
+  <div class="home"><MainMenu /><License /></div>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
-  import World from '@/components/scene/World.vue'
+  import MainMenu from '@/components/MainMenu.vue'
+  import License from '@/components/License.vue'
   @Component({
     components: {
-      World
+      MainMenu,
+      License
     }
   })
   export default class Home extends Vue {}

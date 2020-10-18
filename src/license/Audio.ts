@@ -12,6 +12,7 @@ export const audioLicense: License = {
     ],
     source:
       'https://soundcloud.com/lonealphamusic/snails-house-pixel-galaxy-lone-alpha-remix',
+    cover: '/pictures/lone_alpha.jpg',
     license: ShareAdapt
   },
   killbill: {
@@ -27,6 +28,7 @@ export const audioLicense: License = {
       }
     ],
     source: 'https://www.youtube.com/watch?v=MZjB4JHo7pk',
+    cover: '/pictures/rav.jpg',
     license: ShareAdapt
   }
 }
