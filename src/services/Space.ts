@@ -1,4 +1,7 @@
 import {
+  AnimationClip,
+  AnimationMixer,
+  Clock,
   DoubleSide,
   Mesh,
   MeshPhongMaterial,
@@ -17,6 +20,7 @@ import { camera, assetManager } from '.'
 import TextureBlue from './../assets/background/space/Nebula_Blue.png'
 import TextureRed from './../assets/background/space/Nebula_Red.png'
 import TexturePink from './../assets/background/space/Nebula_Aqua_Pink.png'
+import { getTicks } from './ClockUtils'
 
 class Space {
   private texture: { blue?: Texture; red?: Texture; pink?: Texture } = {}
@@ -26,12 +30,21 @@ class Space {
   private backSphere!: Mesh
 
   private camera!: PerspectiveCamera
+  private clock!: Clock
+  private time: number = 1
 
   private scene!: Scene
 
   private renderer!: WebGLRenderer
+  private fps: number = 60
+
+  private models3D!: any
+
+  private mixers: AnimationMixer[] | [] = []
 
   public async initSpace() {
+    this.clock = new Clock()
+
     this.scene = new Scene()
     this.camera = camera.create2()
     this.renderer = new WebGLRenderer({
@@ -41,6 +54,8 @@ class Space {
     this.renderer.setSize(window.innerWidth, window.innerHeight)
 
     this.loadTextures()
+
+    await this.loadModels()
 
     this.geo = new SphereGeometry(20, 20, 20)
     this.material = new MeshPhongMaterial()
@@ -63,11 +78,6 @@ class Space {
     const spotLight2 = new SpotLight(0xffffff)
     spotLight2.position.set(40, -60, 30)
     spotLight2.intensity = 1.5
-    console.log('hi')
-    assetManager.load3DModels().then(console.log)
-    const models3D = await assetManager.load3DModels()
-    console.log(models3D)
-    console.log('hi')
 
     this.scene.add(spotLight)
 
@@ -76,7 +86,17 @@ class Space {
     this.scene.add(this.backSphere)
     this.scene.add(this.camera)
 
-    this.scene.add(models3D)
+    // Add all models
+    Object.values(this.models3D).forEach((model: any) => {
+      this.scene.add(model.scene)
+
+      const mixer = new AnimationMixer(model.scene)
+      const firstClip = Object.values(model.animations)[0]
+      const action = mixer.clipAction(firstClip as AnimationClip)
+      action.play()
+      this.mixers.push(mixer as never)
+    })
+
     this.render()
   }
 
@@ -85,9 +105,18 @@ class Space {
     this.backSphereUpdateMaterialOptions()
   }
 
-  private render() {
+  private render(time?: number) {
+    if (time) this.time = time
+
+    const ticks = getTicks(this.clock, this.fps)
+    for (let i = 0; i < ticks; i++) {
+      for (const mixer of this.mixers) {
+        mixer.update(0.1)
+      }
+
+      this.renderer.render(this.scene, this.camera)
+    }
     window.requestAnimationFrame(this.render.bind(this))
-    this.renderer.render(this.scene, this.camera)
   }
 
   private backSphereUpdateMaterialOptions(): void {
@@ -96,6 +125,18 @@ class Space {
     this.backSphere.material.map.wrapT = RepeatWrapping
     this.backSphere.material.map.repeat.set(5, 3)
     this.backSphere.material.needsUpdate = true
+  }
+
+  private async loadModels(): Promise<any> {
+    this.models3D = await assetManager.load3DModels()
+
+    var _modelsHolder = {}
+    this.models3D.forEach(model => {
+      _modelsHolder[Object.keys(model)[0]] = model[Object.keys(model)[0]]
+    })
+    this.models3D = _modelsHolder
+    this.models3D = assetManager.set3DAnimation(this.models3D)
+    console.log(this.models3D)
   }
 
   private loadTextures(): void {

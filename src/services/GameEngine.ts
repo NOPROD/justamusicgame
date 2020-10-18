@@ -7,8 +7,9 @@ import {
   light,
   windowService,
   visualizer,
-  audioAnalyser
-} from './'
+  audioAnalyser,
+  getTicks
+} from '.'
 
 import { songs } from '@/data/AudioFile'
 
@@ -42,7 +43,7 @@ export class Engine {
   }
 
   private run(time?: number) {
-    const ticks = this.getTicks()
+    const ticks = getTicks(this.clock, this.fps)
     for (let i = 0; i < ticks; i++) {
       this.animate(time ? time : undefined)
     }
@@ -95,9 +96,5 @@ export class Engine {
       scene.add3DObject(particles.getMaterial())
     }
     console.log(this)
-  }
-
-  private getTicks(): number {
-    return Math.round(this.clock.getDelta() / (1 / this.fps))
   }
 }

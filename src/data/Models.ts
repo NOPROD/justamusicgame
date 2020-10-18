@@ -8,17 +8,5 @@ export const Models: {
       url: '/3D/snails/jellyFish/source/Comb-jelly.gltf',
       texture: ''
     }
-  },
-  test: {
-    test436: {
-      url: '/3D/snails/jellyFish/source/Comb-jelly.gltf',
-      texture: ''
-    }
-  },
-  foo: {
-    bar: {
-      url: '/3D/snails/jellyFish/source/Comb-jelly.gltf',
-      texture: ''
-    }
   }
 }

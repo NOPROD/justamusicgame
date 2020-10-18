@@ -11,3 +11,5 @@ export * from './GameEngine'
 export * from './AssetsManager'
 
 export * from './Space'
+
+export * from './ClockUtils'

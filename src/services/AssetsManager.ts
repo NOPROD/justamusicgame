@@ -34,6 +34,7 @@ export class AssetsManager {
       })
       model.animations = animsByName
     })
+    return models
   }
 }
 
